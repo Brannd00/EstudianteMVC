@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class EstudianteController {
 
-    // ── Vista ─────────────────────────────────────────────────────────────────
     private EstudianteView vista;
-
-    // ── Array de estudiantes (fuente de datos) ────────────────────────────────
     private Estudiante[] estudiantes;
-
-    // ── Constructor ───────────────────────────────────────────────────────────
-
+    
     public EstudianteController(EstudianteView vista) {
         this.vista = vista;
         this.vista.setControlador(this);
