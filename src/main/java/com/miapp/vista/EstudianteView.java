@@ -31,7 +31,7 @@ public class EstudianteView extends JFrame {
 
 
     private void initComponentes() {
-        setTitle("Búsqueda de Estudiantes — MVC NetBeans");
+        setTitle("Busqueda de Estudiantes — MVC NetBeans");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(700, 520);
         setLocationRelativeTo(null);
@@ -130,7 +130,7 @@ public class EstudianteView extends JFrame {
         try {
             promedio = Double.parseDouble(textoPromedio.replace(",", "."));
         } catch (NumberFormatException ex) {
-            mostrarError("El promedio debe ser un número válido (ej: 4.5).");
+            mostrarError("El promedio debe ser un numero valido (ej: 4.5).");
             return;
         }
 
@@ -141,7 +141,7 @@ public class EstudianteView extends JFrame {
     public void mostrarEstudiante(Object[] fila) {
         limpiarTabla();
         agregarFila(fila);
-        setEstado("Se encontró 1 estudiante.");
+        setEstado("Se encontro 1 estudiante.");
     }
 
     
@@ -164,7 +164,7 @@ public class EstudianteView extends JFrame {
     }
 
     public void mostrarConfirmacion(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, mensaje, "Exito", JOptionPane.INFORMATION_MESSAGE);
         setEstado(mensaje);
         limpiarFormularioAgregar();
     }
