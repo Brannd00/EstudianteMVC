@@ -11,11 +11,11 @@ import java.util.List;
 public class EstudianteController {
 
     private EstudianteView vista;
-    private List<Estudiante> estudiantes;      
+    private List<Estudiante> estudiantes;     
     private int siguienteId;                   
-   
+
     private List<Estudiante> ultimosResultados; 
-    private boolean ordenAscendente = true;     
+    private boolean ordenAscendente = true;      
 
     public EstudianteController(EstudianteView vista) {
         this.vista = vista;
@@ -39,7 +39,6 @@ public class EstudianteController {
         estudiantes.add(new Estudiante(11, "Ana Milena Ruiz",   "Derecho",                 4.0));
         estudiantes.add(new Estudiante(12, "Carlos Andrés Paz", "Administración",          3.6));
 
-        
         siguienteId = estudiantes.size() + 1;
     }
 
@@ -60,7 +59,6 @@ public class EstudianteController {
             }
         }
 
-        
         ultimosResultados = resultados;
 
         if (resultados.isEmpty()) {
@@ -74,16 +72,15 @@ public class EstudianteController {
 
     
     public void mostrarTodos() {
-        
         ultimosResultados = new ArrayList<>(estudiantes);
         vista.mostrarEstudiantes(convertirAFilas(ultimosResultados));
     }
 
-  
+    
     public void ordenarPor(String criterio) {
 
         if (ultimosResultados == null || ultimosResultados.isEmpty()) {
-            vista.mostrarError("No hay resultados para ordenar, realiace una busqueda primero.");
+            vista.mostrarError("No hay resultados para ordenar. Realice una busqueda primero.");
             return;
         }
 
@@ -92,7 +89,6 @@ public class EstudianteController {
         if ("Promedio".equalsIgnoreCase(criterio)) {
             comparador = Comparator.comparingDouble(Estudiante::getPromedio);
         } else {
-        
             comparador = Comparator.comparing(Estudiante::getNombre, String.CASE_INSENSITIVE_ORDER);
         }
 
@@ -102,7 +98,6 @@ public class EstudianteController {
 
         ultimosResultados.sort(comparador);
 
-       
         ordenAscendente = !ordenAscendente;
 
         vista.mostrarEstudiantes(convertirAFilas(ultimosResultados));
@@ -132,7 +127,6 @@ public class EstudianteController {
 
         vista.mostrarConfirmacion("Estudiante \"" + nuevo.getNombre() + "\" agregado correctamente.");
 
-        
         mostrarTodos();
     }
 

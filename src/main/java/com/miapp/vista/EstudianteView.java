@@ -27,7 +27,8 @@ public class EstudianteView extends JFrame {
     private JButton                btnOrdenar;
 
     private EstudianteController controlador;
-    
+
+
     public EstudianteView() {
         initComponentes();
         initEventos();
@@ -35,7 +36,7 @@ public class EstudianteView extends JFrame {
 
 
     private void initComponentes() {
-        setTitle("Busqueda de Estudiantes");
+        setTitle("Búsqueda de Estudiantes");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(750, 600);
         setLocationRelativeTo(null);
@@ -151,8 +152,7 @@ public class EstudianteView extends JFrame {
         });
     }
 
-    
-    private void onAgregar() {
+        private void onAgregar() {
         if (controlador == null) {
             return;
         }
