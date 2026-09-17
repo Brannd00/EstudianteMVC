@@ -4,6 +4,7 @@ import com.miapp.modelo.Estudiante;
 import com.miapp.vista.EstudianteView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -12,6 +13,9 @@ public class EstudianteController {
     private EstudianteView vista;
     private List<Estudiante> estudiantes;      
     private int siguienteId;                   
+   
+    private List<Estudiante> ultimosResultados; 
+    private boolean ordenAscendente = true;     
 
     public EstudianteController(EstudianteView vista) {
         this.vista = vista;
@@ -35,6 +39,7 @@ public class EstudianteController {
         estudiantes.add(new Estudiante(11, "Ana Milena Ruiz",   "Derecho",                 4.0));
         estudiantes.add(new Estudiante(12, "Carlos Andrés Paz", "Administración",          3.6));
 
+        
         siguienteId = estudiantes.size() + 1;
     }
 
@@ -55,8 +60,11 @@ public class EstudianteController {
             }
         }
 
+        
+        ultimosResultados = resultados;
+
         if (resultados.isEmpty()) {
-            vista.mostrarEstudiantes(new ArrayList<>()); // mostrará mensaje vacío
+            vista.mostrarEstudiantes(new ArrayList<>()); 
         } else if (resultados.size() == 1) {
             vista.mostrarEstudiante(convertirAFila(resultados.get(0)));
         } else {
@@ -66,19 +74,50 @@ public class EstudianteController {
 
     
     public void mostrarTodos() {
-        vista.mostrarEstudiantes(convertirAFilas(estudiantes));
+        
+        ultimosResultados = new ArrayList<>(estudiantes);
+        vista.mostrarEstudiantes(convertirAFilas(ultimosResultados));
+    }
+
+  
+    public void ordenarPor(String criterio) {
+
+        if (ultimosResultados == null || ultimosResultados.isEmpty()) {
+            vista.mostrarError("No hay resultados para ordenar, realiace una busqueda primero.");
+            return;
+        }
+
+        Comparator<Estudiante> comparador;
+
+        if ("Promedio".equalsIgnoreCase(criterio)) {
+            comparador = Comparator.comparingDouble(Estudiante::getPromedio);
+        } else {
+        
+            comparador = Comparator.comparing(Estudiante::getNombre, String.CASE_INSENSITIVE_ORDER);
+        }
+
+        if (!ordenAscendente) {
+            comparador = comparador.reversed();
+        }
+
+        ultimosResultados.sort(comparador);
+
+       
+        ordenAscendente = !ordenAscendente;
+
+        vista.mostrarEstudiantes(convertirAFilas(ultimosResultados));
     }
 
     
     public void agregarEstudiante(String nombre, String carrera, double promedio) {
 
         if (nombre == null || nombre.trim().isEmpty()) {
-            vista.mostrarError("El nombre no puede estar vacío.");
+            vista.mostrarError("El nombre no puede estar vacio.");
             return;
         }
 
         if (carrera == null || carrera.trim().isEmpty()) {
-            vista.mostrarError("La carrera no puede estar vacía.");
+            vista.mostrarError("La carrera no puede estar vacia.");
             return;
         }
 
@@ -93,6 +132,7 @@ public class EstudianteController {
 
         vista.mostrarConfirmacion("Estudiante \"" + nuevo.getNombre() + "\" agregado correctamente.");
 
+        
         mostrarTodos();
     }
 

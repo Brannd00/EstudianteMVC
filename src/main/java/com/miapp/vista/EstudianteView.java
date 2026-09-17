@@ -8,10 +8,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
+
 public class EstudianteView extends JFrame {
 
     private JTextField             txtNombre;
     private JButton                btnBuscar;
+    private JButton                btnMostrarTodos;
     private JTable                 tblResultados;
     private DefaultTableModel      modeloTabla;
     private JLabel                 lblEstado;
@@ -21,9 +23,11 @@ public class EstudianteView extends JFrame {
     private JTextField             txtNuevoPromedio;
     private JButton                btnAgregar;
 
+    private JComboBox<String>      cmbCriterioOrden;
+    private JButton                btnOrdenar;
+
     private EstudianteController controlador;
-
-
+    
     public EstudianteView() {
         initComponentes();
         initEventos();
@@ -31,9 +35,9 @@ public class EstudianteView extends JFrame {
 
 
     private void initComponentes() {
-        setTitle("Busqueda de Estudiantes — MVC NetBeans");
+        setTitle("Busqueda de Estudiantes");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(700, 520);
+        setSize(750, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
@@ -50,9 +54,13 @@ public class EstudianteView extends JFrame {
         btnBuscar.setForeground(Color.WHITE);
         btnBuscar.setFocusPainted(false);
 
+        btnMostrarTodos = new JButton("Mostrar todos");
+        btnMostrarTodos.setFocusPainted(false);
+
         panelBusqueda.add(lblNombre);
         panelBusqueda.add(txtNombre);
         panelBusqueda.add(btnBuscar);
+        panelBusqueda.add(btnMostrarTodos);
 
         JPanel panelAgregar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         panelAgregar.setBorder(BorderFactory.createTitledBorder("Agregar estudiante"));
@@ -76,8 +84,21 @@ public class EstudianteView extends JFrame {
         panelAgregar.add(txtNuevoPromedio);
         panelAgregar.add(btnAgregar);
 
+        JPanel panelOrdenar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        panelOrdenar.setBorder(BorderFactory.createTitledBorder("Ordenar resultados"));
+
+        JLabel lblCriterio = new JLabel("Criterio:");
+        cmbCriterioOrden = new JComboBox<>(new String[]{"Nombre", "Promedio"});
+        btnOrdenar = new JButton("Ordenar");
+        btnOrdenar.setFocusPainted(false);
+
+        panelOrdenar.add(lblCriterio);
+        panelOrdenar.add(cmbCriterioOrden);
+        panelOrdenar.add(btnOrdenar);
+
         panelSuperior.add(panelBusqueda);
         panelSuperior.add(panelAgregar);
+        panelSuperior.add(panelOrdenar);
 
         String[] columnas = {"ID", "Nombre", "Carrera", "Promedio"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
@@ -111,9 +132,23 @@ public class EstudianteView extends JFrame {
 
         txtNombre.addActionListener((ActionEvent e) -> btnBuscar.doClick());
 
+        btnMostrarTodos.addActionListener((ActionEvent e) -> {
+            if (controlador != null) {
+                controlador.mostrarTodos();
+            }
+        });
+
         btnAgregar.addActionListener((ActionEvent e) -> onAgregar());
 
         txtNuevoPromedio.addActionListener((ActionEvent e) -> btnAgregar.doClick());
+
+        
+        btnOrdenar.addActionListener((ActionEvent e) -> {
+            if (controlador != null) {
+                String criterio = (String) cmbCriterioOrden.getSelectedItem();
+                controlador.ordenarPor(criterio);
+            }
+        });
     }
 
     
@@ -163,6 +198,7 @@ public class EstudianteView extends JFrame {
         setEstado("Error: " + mensaje);
     }
 
+    
     public void mostrarConfirmacion(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Exito", JOptionPane.INFORMATION_MESSAGE);
         setEstado(mensaje);
